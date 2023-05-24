@@ -11,7 +11,7 @@
         [TestMethod]
         public void IsSdkTest_TrueTest()
         {
-            string path = Path.GetFullPath("../../../TestData/sdk.csproj");
+            string path = Path.GetFullPath("../../../TestData/sdk.csprojTest");
 
             // Arrange.
 
@@ -26,7 +26,7 @@
         [TestMethod]
         public void IsLegacyTest_TrueTest()
         {
-            string path = Path.GetFullPath("../../../TestData/legacy.csproj");
+            string path = Path.GetFullPath("../../../TestData/legacy.csprojTest");
 
             // Arrange.
 
