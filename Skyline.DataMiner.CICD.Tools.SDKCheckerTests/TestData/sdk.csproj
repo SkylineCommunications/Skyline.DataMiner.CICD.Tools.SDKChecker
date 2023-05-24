@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+	<PackAsTool>true</PackAsTool>
+	<ToolCommandName>NuGetPackageConfigDetector</ToolCommandName>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>Skyline.DataMiner.CICD.Tools.NuGetPackageConfigDetector</PackageId>
+    <Version>1.0.1</Version>
+    <Authors>Skyline Communications</Authors>
+    <Company>Skyline Communications</Company>
+    <Description>This NuGet Package returns a list of all projects using packages.config for their NuGets.</Description>
+    <Copyright>Copyright © $([System.DateTime]::Now.ToString('yyyy'))</Copyright>
+	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	<PackageIcon>Icon.png</PackageIcon>
+	<PackageProjectUrl>https://skyline.be/</PackageProjectUrl>
+	<PackageTags>Skyline;DataMiner;CICD</PackageTags>
+	<AssemblyName>Skyline.DataMiner.CICD.Tools.NuGetPackageConfigDetector</AssemblyName>
+	<RootNamespace>Skyline.DataMiner.CICD.Tools.NuGetPackageConfigDetector</RootNamespace>
+  </PropertyGroup>
+  
+	<ItemGroup>
+		<None Include="..\_NuGetItems\Icon.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\_NuGetItems\LICENSE.txt">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.5.5" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.5.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.5.0" />
+    <PackageReference Include="Skyline.DataMiner.CICD.FileSystem" Version="1.0.0.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+  </ItemGroup>
+
+</Project>
