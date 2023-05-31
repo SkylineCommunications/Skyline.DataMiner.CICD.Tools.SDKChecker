@@ -1,10 +1,10 @@
 ﻿namespace Skyline.DataMiner.CICD.Tools.SDKCheckerTests
 {
-	using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-	using Skyline.DataMiner.CICD.Tools.SDKChecker;
+    using Skyline.DataMiner.CICD.Tools.SDKChecker;
 
-	[TestClass]
+    [TestClass]
     public class ProjectFileTests
     {
         [TestMethod]
