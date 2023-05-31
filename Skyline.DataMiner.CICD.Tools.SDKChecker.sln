@@ -7,10 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CICD.Tools.SDKChecker", "CI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D56CBDBF-DF9E-491D-AB10-0D141B1D63A8}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.CICD.Tools.SDKCheckerTests", "Skyline.DataMiner.CICD.Tools.SDKCheckerTests\Skyline.DataMiner.CICD.Tools.SDKCheckerTests.csproj", "{1A2091C7-5AF0-466D-8A4D-5C8BC4DC2D05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skyline.DataMiner.CICD.Tools.SDKCheckerTests", "Skyline.DataMiner.CICD.Tools.SDKCheckerTests\Skyline.DataMiner.CICD.Tools.SDKCheckerTests.csproj", "{1A2091C7-5AF0-466D-8A4D-5C8BC4DC2D05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

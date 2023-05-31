@@ -21,7 +21,7 @@
         /// <exception cref="InvalidOperationException"></exception>
         public ProjectFile(string pathToProjectFile)
         {
-            this.projectFilePath = pathToProjectFile;
+            projectFilePath = pathToProjectFile;
 
             using (var reader = File.OpenText(pathToProjectFile))
             {

@@ -5,9 +5,8 @@
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>SDKChecker</ToolCommandName>
 		<AssemblyName>Skyline.DataMiner.CICD.Tools.SDKChecker</AssemblyName>
-		<PackageVersion>1.0.1</PackageVersion>
-		<Version>1.0.1</Version>
-		<PackageTags>Skyline;DataMiner</PackageTags>
+		<RootNamespace>Skyline.DataMiner.CICD.Tools.SDKChecker</RootNamespace>
+		<PackageTags>Skyline;DataMiner;CICD</PackageTags>
 		<PackageProjectUrl>https://skyline.be</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
@@ -21,6 +20,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
 		<None Include="README.md" Pack="true" PackagePath="" />
 		<None Include="LICENSE.txt" Pack="true" PackagePath="" />
 		<None Include="nuget\Icon.png" Pack="true" PackagePath="" />
