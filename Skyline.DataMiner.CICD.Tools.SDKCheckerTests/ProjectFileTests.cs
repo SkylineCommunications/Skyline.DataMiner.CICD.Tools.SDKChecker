@@ -1,6 +1,5 @@
 ﻿namespace Skyline.DataMiner.CICD.Tools.SDKCheckerTests
 {
-    using Microsoft.VisualStudio.TestPlatform.TestHost;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using Skyline.DataMiner.CICD.Tools.SDKChecker;
@@ -38,5 +37,4 @@
             Assert.IsFalse(isSdk);
         }
     }
-
 }
