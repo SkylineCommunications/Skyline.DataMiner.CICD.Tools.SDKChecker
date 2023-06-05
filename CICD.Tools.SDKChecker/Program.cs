@@ -11,6 +11,7 @@
     using Microsoft.CodeAnalysis.MSBuild;
 
     using Skyline.DataMiner.CICD.FileSystem;
+    using Skyline.DataMiner.CICD.Tools.Reporter;
 
     /// <summary>
     /// Checks what projects are Legacy style or SDK Style.
@@ -32,12 +33,30 @@
                 IsRequired = true
             };
 
-            var rootCommand = new RootCommand("Returns any project not using SDK Style.")
+            var repoSourceOption = new Option<string>(
+            name: "--repositoryName",
+            description: "The name of the repository, when provided a call will be made to devopsmetrics.skyline.be.")
             {
-                workspaceOption
+                IsRequired = false
             };
 
-            rootCommand.SetHandler(Process, workspaceOption);
+
+            var repoBranchOption = new Option<string>(
+            name: "--repositoryBranch",
+            description: "The branch of the repository, when provided a call will be made to devopsmetrics.skyline.be.")
+            {
+                IsRequired = false
+            };
+
+            var rootCommand = new RootCommand("Returns any project not using SDK Style.")
+            {
+                workspaceOption,
+                repoSourceOption,
+                repoBranchOption,
+            };
+
+
+            rootCommand.SetHandler(Process, workspaceOption, repoSourceOption, repoBranchOption);
 
             await rootCommand.InvokeAsync(args);
 
@@ -85,8 +104,9 @@
             return projects;
         }
 
-        private static void Process(string workspace)
+        private static void Process(string workspace, string repoName, string branch)
         {
+            DevOpsMetrics metrics = new DevOpsMetrics();
             var pathToSolution = FileSystem.Instance.Directory.EnumerateFiles(workspace, "*.sln", SearchOption.AllDirectories).FirstOrDefault();
             if (String.IsNullOrWhiteSpace(pathToSolution))
             {
@@ -99,7 +119,18 @@
 
             if (!String.IsNullOrWhiteSpace(output))
             {
+                if (!String.IsNullOrWhiteSpace(repoName) && !String.IsNullOrWhiteSpace(branch))
+                {
+                    metrics.ReportAsync($"Skyline.DataMiner.CICD.Tools.SDKChecker|Legacy|repoName:{repoName}|repoBranch:{branch}");
+                }
                 Console.Write(output);
+            }
+            else
+            {
+                if (!String.IsNullOrWhiteSpace(repoName) && !String.IsNullOrWhiteSpace(branch))
+                {
+                    metrics.ReportAsync($"Skyline.DataMiner.CICD.Tools.SDKChecker|SDK|repoName:{repoName}|repoBranch:{branch}");
+                }
             }
         }
     }
