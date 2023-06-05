@@ -104,7 +104,7 @@
             return projects;
         }
 
-        private static void Process(string workspace, string repoName, string branch)
+        private static async Task Process(string workspace, string repoName, string branch)
         {
             DevOpsMetrics metrics = new DevOpsMetrics();
             var pathToSolution = FileSystem.Instance.Directory.EnumerateFiles(workspace, "*.sln", SearchOption.AllDirectories).FirstOrDefault();
@@ -121,7 +121,7 @@
             {
                 if (!String.IsNullOrWhiteSpace(repoName) && !String.IsNullOrWhiteSpace(branch))
                 {
-                    metrics.ReportAsync($"Skyline.DataMiner.CICD.Tools.SDKChecker|Legacy|repoName:{repoName}|repoBranch:{branch}");
+                   await metrics.ReportAsync($"Skyline.DataMiner.CICD.Tools.SDKChecker|Legacy|repoName:{repoName}|repoBranch:{branch}");
                 }
                 Console.Write(output);
             }
@@ -129,7 +129,7 @@
             {
                 if (!String.IsNullOrWhiteSpace(repoName) && !String.IsNullOrWhiteSpace(branch))
                 {
-                    metrics.ReportAsync($"Skyline.DataMiner.CICD.Tools.SDKChecker|SDK|repoName:{repoName}|repoBranch:{branch}");
+                   await metrics.ReportAsync($"Skyline.DataMiner.CICD.Tools.SDKChecker|SDK|repoName:{repoName}|repoBranch:{branch}");
                 }
             }
         }
