@@ -119,17 +119,32 @@
 
             if (!String.IsNullOrWhiteSpace(output))
             {
-                if (!String.IsNullOrWhiteSpace(repoName) && !String.IsNullOrWhiteSpace(branch))
+                try
                 {
-                   await metrics.ReportAsync($"Skyline.DataMiner.CICD.Tools.SDKChecker|Legacy|repoName:{repoName}|repoBranch:{branch}");
+                    if (!String.IsNullOrWhiteSpace(repoName) && !String.IsNullOrWhiteSpace(branch))
+                    {
+                        await metrics.ReportAsync($"Skyline.DataMiner.CICD.Tools.SDKChecker|Legacy|repoName:{repoName}|repoBranch:{branch}");
+                    }
                 }
+                catch
+                {
+                    // gobble up any issues. Not important for end-user.
+                }
+
                 Console.Write(output);
             }
             else
             {
-                if (!String.IsNullOrWhiteSpace(repoName) && !String.IsNullOrWhiteSpace(branch))
+                try
                 {
-                   await metrics.ReportAsync($"Skyline.DataMiner.CICD.Tools.SDKChecker|SDK|repoName:{repoName}|repoBranch:{branch}");
+                    if (!String.IsNullOrWhiteSpace(repoName) && !String.IsNullOrWhiteSpace(branch))
+                    {
+                        await metrics.ReportAsync($"Skyline.DataMiner.CICD.Tools.SDKChecker|SDK|repoName:{repoName}|repoBranch:{branch}");
+                    }
+                }
+                catch
+                {
+                    // gobble up any issues. Not important for end-user.
                 }
             }
         }
