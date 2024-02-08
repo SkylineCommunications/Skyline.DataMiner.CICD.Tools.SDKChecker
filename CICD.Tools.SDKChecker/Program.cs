@@ -39,8 +39,7 @@
             {
                 IsRequired = false
             };
-
-
+            
             var repoBranchOption = new Option<string>(
             name: "--repositoryBranch",
             description: "The branch of the repository, when provided a call will be made to devopsmetrics.skyline.be.")
@@ -54,7 +53,6 @@
                 repoSourceOption,
                 repoBranchOption,
             };
-
 
             rootCommand.SetHandler(Process, workspaceOption, repoSourceOption, repoBranchOption);
 
