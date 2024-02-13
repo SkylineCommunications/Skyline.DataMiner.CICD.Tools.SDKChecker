@@ -48,7 +48,11 @@
 
             var solutionFilePath = new Option<string>(
                 name: "--solution-filepath",
-                description: "The filepath to the solution.");
+                description: "The filepath to the solution.")
+            {
+                IsRequired = false
+            };
+            solutionFilePath.LegalFilePathsOnly();
 
             var rootCommand = new RootCommand("Returns any project not using SDK Style.")
             {
@@ -86,7 +90,7 @@
             {
                 var project = solution.LoadProject(projectInSolution);
 
-                if (project is not { ProjectType: ProjectType.Sdk })
+                if (project is not { ProjectStyle: ProjectStyle.Sdk })
                 {
                     legacyStyleProjects.Add(projectInSolution.Name);
                 }
