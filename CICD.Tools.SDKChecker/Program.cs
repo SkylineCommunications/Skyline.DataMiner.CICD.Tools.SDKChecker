@@ -7,10 +7,9 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Microsoft.Build.Locator;
-    using Microsoft.CodeAnalysis.MSBuild;
-
     using Skyline.DataMiner.CICD.FileSystem;
+    using Skyline.DataMiner.CICD.Parsers.Common.VisualStudio;
+    using Skyline.DataMiner.CICD.Parsers.Common.VisualStudio.Projects;
     using Skyline.DataMiner.CICD.Tools.Reporter;
 
     /// <summary>
@@ -47,73 +46,57 @@
                 IsRequired = false
             };
 
+            var solutionFilePath = new Option<string>(
+                name: "--solution-filepath",
+                description: "The filepath to the solution.")
+            {
+                IsRequired = false
+            };
+            solutionFilePath.LegalFilePathsOnly();
+
             var rootCommand = new RootCommand("Returns any project not using SDK Style.")
             {
                 workspaceOption,
                 repoSourceOption,
                 repoBranchOption,
+                solutionFilePath
             };
 
-            rootCommand.SetHandler(Process, workspaceOption, repoSourceOption, repoBranchOption);
+            rootCommand.SetHandler(Process, workspaceOption, repoSourceOption, repoBranchOption, solutionFilePath);
 
             await rootCommand.InvokeAsync(args);
 
             return 0;
         }
-
-        /// <summary>
-        /// Retrieves all projects not using SDK style.
-        /// </summary>
-        /// <param name="pathToSolution">Directory containing the .sln</param>
-        /// <returns>A collection of project names.</returns>
-        private static ISet<string> RetrieveLegacyStyleProjects(string pathToSolution)
+        
+        private static async Task Process(string workspace, string repoName, string branch, string solutionFilepath)
         {
-            if (!MSBuildLocator.IsRegistered)
+            DevOpsMetrics metrics = new DevOpsMetrics();
+
+            if (String.IsNullOrWhiteSpace(solutionFilepath))
             {
-                MSBuildLocator.RegisterDefaults();
+                solutionFilepath = FileSystem.Instance.Directory.EnumerateFiles(workspace, "*.sln", SearchOption.AllDirectories).FirstOrDefault();
+            }
+            
+            if (String.IsNullOrWhiteSpace(solutionFilepath))
+            {
+                throw new InvalidOperationException("Could not locate a solution file (.sln) in workspace: " + workspace);
             }
 
-            HashSet<string> projectsWithLegacyStyle = new HashSet<string>();
-            foreach (var projectFile in GetProjects(pathToSolution))
+            Solution solution = Solution.Load(solutionFilepath);
+
+            List<string> legacyStyleProjects = new List<string>();
+            foreach (var projectInSolution in solution.Projects)
             {
-                var projectFileProcessor = new ProjectFile(projectFile);
-                if (!projectFileProcessor.UsesSDKStyle())
+                var project = solution.LoadProject(projectInSolution);
+
+                if (project is not { ProjectStyle: ProjectStyle.Sdk })
                 {
-                    projectsWithLegacyStyle.Add(Path.GetFileNameWithoutExtension(projectFile));
+                    legacyStyleProjects.Add(projectInSolution.Name);
                 }
             }
 
-            return projectsWithLegacyStyle;
-        }
-
-        private static IList<string> GetProjects(string solutionFilePath)
-        {
-            List<string> projects = new();
-
-            var workspace = MSBuildWorkspace.Create();
-
-            var solution = Task.Run(() => workspace.OpenSolutionAsync(solutionFilePath)).GetAwaiter().GetResult();
-
-            foreach (var project in solution.Projects)
-            {
-                projects.Add(project.FilePath);
-            }
-
-            return projects;
-        }
-
-        private static async Task Process(string workspace, string repoName, string branch)
-        {
-            DevOpsMetrics metrics = new DevOpsMetrics();
-            var pathToSolution = FileSystem.Instance.Directory.EnumerateFiles(workspace, "*.sln", SearchOption.AllDirectories).FirstOrDefault();
-            if (String.IsNullOrWhiteSpace(pathToSolution))
-            {
-                throw new InvalidOperationException("Could not located a solution file (.sln) in workspace: " + workspace);
-            }
-
-            var projectsWithPackageConfig = RetrieveLegacyStyleProjects(pathToSolution);
-
-            string output = String.Join("#", projectsWithPackageConfig);
+            string output = String.Join("#", legacyStyleProjects);
 
             if (!String.IsNullOrWhiteSpace(output))
             {
