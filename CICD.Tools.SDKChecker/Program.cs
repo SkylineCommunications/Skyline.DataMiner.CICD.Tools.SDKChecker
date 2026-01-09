@@ -75,12 +75,14 @@
 
             if (String.IsNullOrWhiteSpace(solutionFilepath))
             {
-                solutionFilepath = FileSystem.Instance.Directory.EnumerateFiles(workspace, "*.sln", SearchOption.AllDirectories).FirstOrDefault();
+                solutionFilepath = FileSystem.Instance.Directory.EnumerateFiles(workspace, "*.sln", SearchOption.AllDirectories)
+                                             .Concat(FileSystem.Instance.Directory.EnumerateFiles(workspace, "*.slnx", SearchOption.AllDirectories))
+                                             .FirstOrDefault();
             }
             
             if (String.IsNullOrWhiteSpace(solutionFilepath))
             {
-                throw new InvalidOperationException("Could not locate a solution file (.sln) in workspace: " + workspace);
+                throw new InvalidOperationException("Could not locate a solution file (.sln or .slnx) in workspace: " + workspace);
             }
 
             Solution solution = Solution.Load(solutionFilepath);
