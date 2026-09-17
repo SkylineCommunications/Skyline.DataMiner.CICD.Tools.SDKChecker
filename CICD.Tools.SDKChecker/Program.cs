@@ -64,9 +64,7 @@
 
             rootCommand.SetHandler(Process, workspaceOption, repoSourceOption, repoBranchOption, solutionFilePath);
 
-            await rootCommand.InvokeAsync(args);
-
-            return 0;
+            return await rootCommand.InvokeAsync(args);
         }
         
         private static async Task Process(string workspace, string repoName, string branch, string solutionFilepath)
